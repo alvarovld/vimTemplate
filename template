@@ -1,0 +1,44 @@
+set ignorecase                                                          
+set hlsearch                                                            
+set ft=messages                                                         
+set colorcolumn=72                                                      
+set number                                                              
+
+set splitbelow                                                          
+set splitright                                                          
+let g:ctrlp_max_files=0                                                 
+let g:ctrlp_max_depth=40                                                
+set statusline+=%F                                                      
+let NERDTreeShowHidden=1                                                
+let g:ctrlp_show_hidden = 1                                             
+let g:coc_disable_startup_warning = 1                                      
+
+" Plugin manager                                                        
+call plug#begin('~/.vim/plugged')                                          
+" Put your plugins here.                                                
+Plug 'tpope/vim-unimpaired'                                             
+Plug 'ctrlpvim/ctrlp.vim'                                               
+Plug 'tpope/vim-fugitive'                                               
+Plug 'preservim/nerdtree'                                               
+Plug 'Yggdroot/indentLine'                                              
+call plug#end()                                                         
+
+nnoremap <C-J> <C-W><C-J>                                               
+nnoremap <C-K> <C-W><C-K>                                               
+nnoremap <C-L> <C-W><C-L>                                               
+nnoremap <C-H> <C-W><C-H>                                               
+
+" opens search results in a window w/ links and highlight the matches   
+command! -nargs=+ Grep execute 'silent grep! -iF -r -n . -e <args>' | copen | execute 'silent /<args>'
+" shift-control-* Greps for the word under the cursor                   
+:nmap <leader>g :Grep <c-r>=expand("<cword>")<cr><cr>                      
+autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab                   
+autocmd StdinReadPre * let s:std_in=1                                      
+" Open the existing NERDTree on each new tab.                              
+autocmd BufWinEnter * if getcmdwintype() == '' | silent NERDTreeMirror | endif
+" If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
+autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 | 
+    \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
+autocmd StdinReadPre * let s:std_in=1                                      
+autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists('s:std_in') |
+
