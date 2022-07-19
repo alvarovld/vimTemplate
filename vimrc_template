@@ -1,0 +1,62 @@
+set ignorecase
+set hlsearch
+set ft=messages
+set colorcolumn=72
+set number
+
+set splitbelow
+set splitright
+set foldlevelstart=200000
+let g:ctrlp_max_files=0
+let g:ctrlp_max_depth=40
+set statusline+=%F
+let NERDTreeShowHidden=1
+let g:ctrlp_show_hidden = 1
+let g:coc_disable_startup_warning = 1
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+let g:ale_sign_error = '✘'
+let g:ale_sign_warning = '⚠'
+let g:ale_lint_on_text_changed = 'never'
+autocmd FileType *.h,*.hh,*.cc,*.xml,*.yml,*.json autocmd BufWritePre <buffer> :%s/\s\+$//e
+autocmd VimEnter * if argc() == 1 | NERDTree | wincmd p | else | NERDTree | endif
+autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+let g:indentLine_char = '⦙'
+
+" Plugin manager
+call plug#begin('~/.vim/plugged')
+" Put your plugins here.
+Plug 'tpope/vim-unimpaired'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'tpope/vim-fugitive'
+Plug 'preservim/nerdtree'
+Plug 'Yggdroot/indentLine'
+Plug 'scrooloose/nerdtree-project-plugin'
+Plug 'henrik/vim-indexed-search'
+Plug 'pedrohdz/vim-yaml-folds'
+Plug 'dense-analysis/ale'
+call plug#end()
+
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+"toggle nerdtree
+nnoremap <F2> :NERDTreeToggle<cr>
+
+" opens search results in a window w/ links and highlight the matches
+command! -nargs=+ Grep execute 'silent grep! -iF -r -n . -e <args>' | copen | execute 'silent /<args>'
+" shift-control-* Greps for the word under the cursor
+:nmap <leader>g :Grep <c-r>=expand("<cword>")<cr><cr>
+autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+autocmd StdinReadPre * let s:std_in=1
+" Open the existing NERDTree on each new tab.
+autocmd BufWinEnter * if getcmdwintype() == '' | silent NERDTreeMirror | endif
+" If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
+autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
+    \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists('s:std_in') |
+    \ execute 'NERDTree' argv()[0] | wincmd p | enew | execute 'cd '.argv()[0] | endif
+" Start NERDTree. If a file is specified, move the cursor to its window.
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * NERDTree | if argc() > 0 || exists("s:std_in") | wincmd p | endif

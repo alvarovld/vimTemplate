@@ -2,5 +2,5 @@
 
 sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim';
-cat template $1/.vimrc > $1/.vimrc; 
+cat vimrc_template > ~/.vim/.vimrc;
 vim +'PlugInstall --sync' +qa;
