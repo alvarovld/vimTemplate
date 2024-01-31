@@ -1,1 +1,1 @@
-cat ~/.vim/.vimrc > vimrc_template
+cat ~/.vimrc > vimrc_template
